@@ -253,7 +253,7 @@ span.psw {
 						<h3 style="color:gray"><?php echo $movie_dec[0]?></h3>
 					</div>
 					<button type="button" class="btn btn-light" name="book" onclick="document.getElementById('id01').style.display='block'" style="width:auto;">theater list</button>
-					<div id="id01" class="modal">
+					<div id="id01" class="modal">s
   
   		<form class="modal-content animate"  method="post" class="form">
 		    <div class="imgcontainer">

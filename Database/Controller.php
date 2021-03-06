@@ -1,6 +1,7 @@
 <?php
 include 'Model.php';
 $md = new model();
+
 //$name =$_REQUEST['name'];
 
   $desc = $md->fetchById($conn,$movieename,"Movie");
@@ -16,6 +17,64 @@ $file_name = $file_size = $file_tmp = $file_type = $file_ext = $path =  "";
  $id="";
 
   $booking= $md->bookingData($conn,8,"theater");
+
+if(isset($_FILES['excel']['name'])){
+  $flag=0;
+  include 'xlsx.php';
+
+
+
+  if($conn){
+    $excel=SimpleXLSX::parse($_FILES['excel']['tmp_name']);
+    echo "<pre>"; 
+    // print_r($excel->rows(1));
+    print_r($excel->dimension(2));
+    print_r($excel->sheetNames());
+    echo $excel->sheetName($sheet);
+
+        for ($sheet=0; $sheet < sizeof($excel->sheetNames()) ; $sheet++) { 
+        $rowcol=$excel->dimension($sheet);
+        $i=0;
+        if($rowcol[0]!=1 &&$rowcol[1]!=1){
+    foreach ($excel->rows($sheet) as $key => $row) {
+      $q="";  
+      foreach ($row as $key => $cell) {
+        //print_r($cell);echo "<br>";
+        if($i==0){
+          $q.=$cell. " varchar(50),";
+        }else{
+          $q.="'".$cell. "',";
+        }
+      }
+      if($i==0){
+
+        $query="CREATE table  ".$excel->sheetName($sheet)." (".rtrim($q,",").");";
+        echo $query;
+        }else{
+        $query="INSERT INTO ".$excel->sheetName($sheet)." values (".rtrim($q,",").");";
+        echo $query;
+        
+      }
+      
+      if($conn->query($query))
+      {
+        $flag=1;
+      
+      }
+      $i++;
+    }
+  }
+    if($flag==1)
+    {
+      session_start();
+      $table=$excel->sheetName($sheet);
+      header('location:admingrid.php?table='.$table);
+    }
+  }
+  }
+}
+   
+
 
 
 if(isset($_POST["moviesubmit"])) {
@@ -167,11 +226,14 @@ if(isset($_POST["login"]))
 
     if(isset($_POST["buyticket"]))
     {
+      
       $seat = $_POST['btnClickedValue'];
+      $selectedseats = $_POST['selectedseats'];
+      echo $selectedseats;
       $moviename = $_POST['moviename'];
       $theatername = $_POST['theatername'];
       $movietiming = $_POST['movietiming'];
-      $totalseat = $_POST['totalseat'];
+      $totalseats = $_POST['totalseats'];
 
 
        // echo $seat;
@@ -179,7 +241,7 @@ if(isset($_POST["login"]))
        // echo $theatername;
        // echo $movietiming;
 
-       $data = array("movie_name" => $moviename , "theater_name" => $theatername, "timing" => $movietiming,"username"=> $_SESSION["username"],"phone"=>152,"booking_seat"=>$seat,"total_seat"=>$totalseat);
+       $data = array("movie_name" => $moviename , "theater_name" => $theatername, "timing" => $movietiming,"username"=> $_SESSION["username"],"phone"=>152,"booking_seat"=>$seat,"total_seat"=>$totalseats,"selectedseats"=>$selectedseats);
 
       $bookData =  $md->insert($conn, $data, "booking_info");
       if($bookData != null)

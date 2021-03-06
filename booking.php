@@ -124,7 +124,7 @@ img.avatar {
 }
 
 .container {
-  padding: 16px;
+  padding: 20px;
 ;
 }
 
@@ -204,28 +204,24 @@ ul.demo {
   padding: 0;
 }
 li{
-	float: left;
-
+  float: left;
 
 }
 li.active{
   color: red;
 }
-
 li.box {
   box-sizing: border-box;
   width: 5%;
   border: 5px solid red;
  }
  a{
- 	color: black;
- }
- .container{
-  width: 55%;
+  color: black;
  }
   </style>
   </head>
   <body>
+    <h1>hello brother</h1>
     <div id="fh5co-wrapper">
     <div id="fh5co-page">
     
@@ -245,6 +241,8 @@ li.box {
       <center><div class="row">
         <div class="col-md-12">
           <input type="hidden" id="btnClickedValue" name="btnClickedValue" />
+          <input type="hidden" name="totalseats" id="totalseats" value=""> 
+          <input type="hidden" name="selectedseats" id="selectedseats">
           <input type="hidden" name="moviename" value="<?php echo $movie_name[0];?>" />
           <input type="hidden" name="theatername" value="<?php echo $theater_name[0];?>" />
           <input type="hidden" name="movietiming" value="<?php echo $movie_timing[0];?>" />
@@ -252,21 +250,30 @@ li.box {
         </div>
         <div class="col-md-12">
         <nav aria-label="...">
-			  <ul class="pagination pagination-lg">
-            <?php for($i=1; $i < $total_sheet[0]+1;$i++ )
-            {
+        <ul class="pagination pagination-lg">
+            <?php 
+            $j=15; 
+            for($i=1; $i < $total_sheet[0]+1;$i++ )
+              {
+                if($i==$j)
+                {
+                  echo "<br>";
+                  $j = $j+10; 
+                }
               ?>
-				          <li class="page-item" value="<?php echo $i; ?>"><a class="page-link" href="#"><?php echo $i; ?></a></li>
-			       <?php
+                  <li class="page-item" ><input type="hidden" id="tid"value="<?php echo $i; ?>"/><a class="page-link" href="#"><?php echo $i; ?></a></li>
+
+             <?php
              }
              ?>
-			  </ul>
-			</nav>
+        </ul>
+      </nav>
     </div>
        <div class="col-md-12">
-        <button type="submit" name="buyticket" class="btn btn-primary" style="background-color: #333;">Buy Ticket</button>
+        <button type="submit" id="print" name="buyticket" class="btn btn-primary" style="background-color: #333;">Buy Ticket</button>
          <div>
       </div></center>
+      <p id = "GFG_DOWN"></p>
     </div>
 
     
@@ -305,14 +312,35 @@ li.box {
     { 
 
      var value = $(this).attr('value');
-     document.getElementById("btnClickedValue").value = value;
-      $('li').removeClass('active');
+     document.getElementById("selectedseats").value = value;
+      
       $(this).addClass('active');
       
      });
 
     });
- 
+
+
+   $(function () {
+      var counter = 0;
+      var arr= [];
+  $("form li").on('click', function () {
+    var tid = $('input[type="hidden"]', this).val();
+    arr.push($(this).text())
+    counter = counter + 1 ;
+
+    
+    alert (counter);
+    alert ('"' + arr.join('", "') + '"');
+    var x = arr.toString();
+    console.log(x);
+    document.getElementById("selectedseats").value = x;
+    document.getElementById("totalseats").value = counter;
+    
+  });
+});
+    
+   
   </script>
   </body>
 </html>

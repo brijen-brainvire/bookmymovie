@@ -92,17 +92,24 @@ $movie_img = array_column($array, 'movie_img');
 						<h1 id="fh5co-logo"><a href="index.php">BookMovieShow</a></h1>
 						<!-- START #fh5co-menu-wrap -->
 						<nav id="fh5co-menu-wrap" role="navigation">
-							<ul class="sf-menu" id="fh5co-primary-menu">
+							<ul class="sf-menu" id="fh5co-primary-menu" >
 								<li class="active">
-									<a href="" class="active" class="fh5co-sub-ddown">Select City</a>
+									<a href="" class="active" class="fh5co-sub-ddown"  style="margin-right: 80px; text ">Select City</a>
+									
 									<ul class="fh5co-sub-menu">
 										<?php for($i=0;$i < sizeof($fetchCity);$i++)
 										{?>
 										<li value="<?php echo $city_name[$i]; ?>"><a href="#movie"><?php echo $city_name[$i]; ?></a></li>
 									<?php }?>
 									</ul>
+							
 								</li>
-							</ul>
+							</ul><br>
+							<li>
+								
+								<a href="" style="float: right;margin-top: 0px; margin-bottom: 50px;: ">jay</a>
+
+							</li>
 						</nav>
 					</div>
 				</div>
